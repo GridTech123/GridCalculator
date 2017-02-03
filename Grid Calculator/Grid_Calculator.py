@@ -531,7 +531,7 @@ while True:
         pygame.draw.rect(screen, colorScheme[2], [tabx, 0, 400, sy])
         if tabx < sx:
             tabx = tabx + 15
-            #pygame.time.delay(1)
+            #pygame.time.delay(1) 
         else:
             moreTab = False
 
