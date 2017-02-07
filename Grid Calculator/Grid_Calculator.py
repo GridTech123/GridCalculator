@@ -58,6 +58,8 @@ preValuesAnswer = []
 value1 = ''
 value2 = ''
 opperation = 'no opperation'
+tabMenu = 'home'
+PeriodFunc = 'add .'
 
 #pygame start
 try:
@@ -431,9 +433,17 @@ while True:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_KP_PERIOD:   
-                value = '' 
-                value1 = ''
-                value2 = ''
+                if PeriodFunc == 'add .':
+                    value = value + '.'
+                elif PeriodFunc == 'clear':
+                    value = '' 
+                    value1 = ''
+                    value2 = ''
+                pygame.time.delay(100)
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:   
+                value = value[0:len(value) - 1]
                 pygame.time.delay(100)
 
         if event.type == pygame.KEYDOWN:
@@ -501,7 +511,7 @@ while True:
         value2 = ''
 
     if sx > 1919:
-        pygame.draw.rect(screen, colorScheme[5], [1511, 200, sx , sy])
+        pygame.draw.rect(screen, colorScheme[5], [1511, 200, sx - 1511, sy])
         tabClock = 0
         while True:
             try:
@@ -522,7 +532,7 @@ while True:
     if moreTab == 'open':
         pygame.draw.rect(screen, colorScheme[2], [tabx, 0, 400, sy])
         if tabx > tabxLocation:
-            tabx = tabx - 15
+            tabx = tabx - 14
             #pygame.time.delay(1)
         else:
             moreTab = True
@@ -530,7 +540,7 @@ while True:
     if moreTab == 'close':
         pygame.draw.rect(screen, colorScheme[2], [tabx, 0, 400, sy])
         if tabx < sx:
-            tabx = tabx + 15
+            tabx = tabx + 14
             #pygame.time.delay(1) 
         else:
             moreTab = False
@@ -548,20 +558,51 @@ while True:
                 pygame.time.delay(100)
     elif moreTab == 'close':
         screen.blit(more, (sx - 100, 10))
+        pygame.draw.rect(screen, colorScheme[3], [tabx + 10, 190, tabx - 90, 50])
+        screen.blit(hud_font.render('settings', True, colorScheme[0]), (tabx + 15, 190))
         if mx > sx - 100 and mx < sx - 100 + 90 and my > 10 and my < 10 + 90:
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 moreTab = 'open'
                 tabxLocation = sx - 400
                 pygame.time.delay(100)
     elif moreTab == True:
-        screen.blit(more2, (sx - 100, 10))
+        screen.blit(more2, (sx - 100, 10))  
+
+        if tabMenu == 'home':
+            if mx > tabx + 10 and mx < sx and my > 190 and my < 190 + 50:
+                pygame.draw.rect(screen, colorScheme[1], [tabx + 10, 190, tabx - 90, 50])
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    tabMenu = 'settings'
+            else:
+                pygame.draw.rect(screen, colorScheme[3], [tabx + 10, 190, tabx - 90, 50])
+            screen.blit(hud_font.render('settings', True, colorScheme[0]), (tabx + 15, 190))
+
+        elif tabMenu == 'settings':
+            if mx > tabx + 180 and mx < tabx + 180 + tabx - 90 and my > 190 and my < 190 + 50:
+                screen.blit(hud_font.render('. function', True, colorScheme[0]), (tabx + 15, 190))
+                pygame.draw.rect(screen, colorScheme[0], [tabx + 180, 190, tabx - 90, 50])        
+                screen.blit(hud_font.render(PeriodFunc, True, colorScheme[1]), (tabx + 180, 190))      
+                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                    if PeriodFunc == 'clear':
+                        PeriodFunc = 'add .'
+                    elif PeriodFunc == 'add .':
+                        PeriodFunc = 'clear'
+                    pygame.time.delay(100)
+            else:
+                screen.blit(hud_font.render('. function', True, colorScheme[0]), (tabx + 15, 190))
+                pygame.draw.rect(screen, colorScheme[1], [tabx + 180, 190, tabx - 90, 50])
+                screen.blit(hud_font.render(PeriodFunc, True, colorScheme[0]), (tabx + 180, 190))
+
         if mx > sx - 100 and mx < sx - 100 + 90 and my > 10 and my < 10 + 90:
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 moreTab = 'close'
+                tabMenu = 'home'
                 #tabx = sx
                 pygame.time.delay(100)
     elif moreTab == 'open':
         screen.blit(more2, (sx - 100, 10))
+        pygame.draw.rect(screen, colorScheme[3], [tabx + 10, 190, tabx - 90, 50])
+        screen.blit(hud_font.render('settings', True, colorScheme[0]), (tabx + 15, 190))
         if mx > sx - 100 and mx < sx - 100 + 90 and my > 10 and my < 10 + 90:
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 moreTab = 'close'
