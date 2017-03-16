@@ -21,6 +21,13 @@ except:
     os.chdir('html')
     os.startfile('missingPyError.html')
 
+try:
+    import Grid_Vertex
+    Grid_Vertex.init()
+    gv = True
+except:
+    gv = False
+
 #colors
 white = (255, 255, 255)
 black = (0, 0, 0)
@@ -608,4 +615,16 @@ while True:
                 moreTab = 'close'
                 #tabx = sx
                 pygame.time.delay(100)
+
+    try:
+        if gv == True:
+            if Grid_Vertex.receive() != None:
+                try:
+                    screen.blit(hud_font.render(Grid_Vertex.receive(), True, colorScheme[0]), (0, 0))
+                except:
+                    screen.blit(hud_font.render('Grid Vertex: Error rendering text', True, colorScheme[0]), (0, 0))
+    except:
+        pass            
+
+
     display.update()
